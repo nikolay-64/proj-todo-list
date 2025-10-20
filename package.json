@@ -16,7 +16,8 @@
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },
-    "devDependencies": {
+  "devDependencies": {
+    "react-toastify": "^11.0.5",
     "sass": "^1.66.1"
   },
   "scripts": {
