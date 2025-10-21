@@ -7,6 +7,18 @@ import { Bounce, ToastContainer, toast } from "react-toastify";
 
 export const ToDoListPage = () => {
 	const notifyDefault = (s: string) => toast.success(s);
+	const notifyWarningTodo = (s: string) =>
+		toast.warning(s, {
+			position: "bottom-right",
+			autoClose: 15000,
+			hideProgressBar: false,
+			closeOnClick: false,
+			pauseOnHover: true,
+			draggable: true,
+			progress: undefined,
+			theme: "colored",
+			transition: Bounce,
+		});
 	const notifyCreateToDo = (s: string) =>
 		toast.success(s, {
 			position: "bottom-right",
@@ -71,24 +83,26 @@ export const ToDoListPage = () => {
 		notifyCreateToDo("Задача добавлена!");
 	};
   const updateToDo = (toDoItem: ToDo) => {
-		const newTodos: ToDo | undefined = todos.find(
+		const newTodo: ToDo | undefined = todos.find(
 			(el) => el.id === toDoItem.id
 		);
-		if (!newTodos || toDoItem.id === 0) {
+		if (!newTodo || toDoItem.id === 0) {
 			notifyUpdateTodo(
 				`Задача: "${toDoItem.text}" id:"${toDoItem.id}"  не найдена!`
 			);
 			return;
 		}
-		newTodos.isDone = !newTodos.isDone;
+		newTodo.isDone = !newTodo.isDone;
 		setTodos([...todos]);
-		notifyDefault(
-			`Задача: "${newTodos.text}" ${
-				newTodos.isDone
-					? "выполнена!".toUpperCase()
-					: "не выполнена!".toLowerCase()
-			}`
-		);
+		if(newTodo.isDone) {
+			notifyDefault(
+				`Задача: "${newTodo.text}" ВЫПОЛНЕНА!`
+			);
+		} else {
+			notifyWarningTodo(
+				`Задача: "${newTodo.text}" НЕ ВЫПОЛНЕНА`
+			)
+		}
   };
 
 	const deleteToDo = (toDoItem: ToDo) => {
