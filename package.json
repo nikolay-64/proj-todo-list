@@ -17,6 +17,8 @@
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
+    "react-helmet-async": "^2.0.5",
+    "react-router-dom": "^6.28.2",
     "react-toastify": "^11.0.5",
     "sass": "^1.66.1"
   },

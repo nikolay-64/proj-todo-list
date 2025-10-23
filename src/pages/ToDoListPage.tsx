@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Form } from "../components/Form/Form";
-import { Header } from "../components/Header/Header";
 import { ToDoList } from "../components/ToDoList/ToDoList";
 import { ToDo } from "../models/todo-item";
 import { Bounce, ToastContainer, toast } from "react-toastify";
+import { Helmet } from "react-helmet-async";
 
 export const ToDoListPage = () => {
 	const notifyDefault = (s: string) => toast.success(s);
@@ -112,7 +112,9 @@ export const ToDoListPage = () => {
 	};
 	return (
 		<>
-			<Header />
+			<Helmet>
+				<title>Список - ToDoList</title>
+			</Helmet>
 
 			<Form createNewToDo={createNewToDo} />
 
