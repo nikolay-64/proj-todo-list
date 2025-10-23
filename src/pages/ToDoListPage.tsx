@@ -1,12 +1,15 @@
-import { useState } from "react";
 import { Form } from "../components/Form/Form";
 import { ToDoList } from "../components/ToDoList/ToDoList";
 import { ToDo } from "../models/todo-item";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import { Helmet } from "react-helmet-async";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../store";
+import { createAction, deleteAction, updateAction } from "../features/todoList";
 
 export const ToDoListPage = () => {
 	const notifyDefault = (s: string) => toast.success(s);
+	const notifyError = (s: string) => toast.error(s);
 	const notifyWarningTodo = (s: string) =>
 		toast.warning(s, {
 			position: "bottom-right",
@@ -31,18 +34,6 @@ export const ToDoListPage = () => {
 			theme: "colored",
 			transition: Bounce,
 		});
-	const notifyUpdateTodo = (s: string) =>
-		toast.warning(s, {
-			position: "bottom-right",
-			autoClose: 15000,
-			hideProgressBar: false,
-			closeOnClick: false,
-			pauseOnHover: true,
-			draggable: true,
-			progress: undefined,
-			theme: "colored",
-			transition: Bounce,
-		});
 	const notifyDeleteTodo = (s: string) =>
 		toast.error(s, {
 			position: "bottom-right",
@@ -55,59 +46,30 @@ export const ToDoListPage = () => {
 			theme: "colored",
 			transition: Bounce,
 		});
-	const [todos, setTodos] = useState<ToDo[]>([
-		{
-			id: 0,
-			text: "Первая задача(изменить нельзя)",
-			isDone: false,
-		},
-	]);
+
+	const todoList = useSelector((state: RootState) => state.todoList.todos);
+	const dispatch = useDispatch();
 
 	const createNewToDo = (text: string) => {
-		const newToDoId =
-			todos.reduce((maxId: number, el: ToDo) => {
-				if (maxId > el.id) {
-					return maxId;
-				} else {
-					return el.id;
-				}
-			}, 0) + 1;
-
-		const newToDo: ToDo = {
-			id: newToDoId,
-			text: text,
-			isDone: false,
-		};
-		setTodos([...todos, newToDo]);
-
-		notifyCreateToDo("Задача добавлена!");
+		dispatch(createAction(text));
+		notifyCreateToDo('Задача добавлена');
 	};
-  const updateToDo = (toDoItem: ToDo) => {
-		const newTodo: ToDo | undefined = todos.find(
-			(el) => el.id === toDoItem.id
-		);
-		if (!newTodo || toDoItem.id === 0) {
-			notifyUpdateTodo(
-				`Задача: "${toDoItem.text}" id:"${toDoItem.id}"  не найдена!`
-			);
-			return;
+	const updateToDo = (toDoItem: ToDo) => {
+		try {
+			dispatch(updateAction(toDoItem));
+			const newIsDone = !toDoItem.isDone;
+			if (newIsDone) {
+				notifyDefault(`Задача: "${toDoItem.text}" ВЫПОЛНЕНА!`);
+			} else {
+				notifyWarningTodo(`Задача: "${toDoItem.text}" НЕ ВЫПОЛНЕНА`);
+			}
+		} catch (error: any) {
+			notifyError(error.message);
 		}
-		newTodo.isDone = !newTodo.isDone;
-		setTodos([...todos]);
-		if(newTodo.isDone) {
-			notifyDefault(
-				`Задача: "${newTodo.text}" ВЫПОЛНЕНА!`
-			);
-		} else {
-			notifyWarningTodo(
-				`Задача: "${newTodo.text}" НЕ ВЫПОЛНЕНА`
-			)
-		}
-  };
+	};
 
 	const deleteToDo = (toDoItem: ToDo) => {
-		const newTodos = todos.filter((todo) => todo.id !== toDoItem.id);
-		setTodos(newTodos);
+		dispatch(deleteAction(toDoItem));
 		notifyDeleteTodo("Задача удалена!");
 	};
 	return (
@@ -119,7 +81,7 @@ export const ToDoListPage = () => {
 			<Form createNewToDo={createNewToDo} />
 
 			<ToDoList
-				todos={todos}
+				todos={todoList}
 				updateToDo={updateToDo}
 				deleteToDo={deleteToDo}
 			/>
