@@ -1,11 +1,11 @@
-import { FormEvent, useState } from "react";
+import { useState } from "react";
 import "./Form.scss";
 
 export const Form = (props: {createNewToDo: Function}) => {
 	const [text, setText] = useState<string>('');
 
-	const formSubmit = (e: FormEvent) => {
-		e.preventDefault()
+	const formSubmit = (event: React.SyntheticEvent) => {
+		event.preventDefault()
 		if (text) {
 			props.createNewToDo(text);
 			setText('')

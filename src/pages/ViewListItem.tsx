@@ -6,11 +6,10 @@ interface ComponentProps {
 	todos: ToDo[];
 }
 
-export const ItemDescription = ({todos}: ComponentProps) => {
-	const { id } = useParams()
-	const navigate = useNavigate()
-	const [todo, setTodo] = useState<ToDo>()
-
+export const ViewListItem = ({ todos }: ComponentProps) => {
+	const { id } = useParams();
+	const navigate = useNavigate();
+	const [todo, setTodo] = useState<ToDo>();
 
 	useEffect(() => {
 		const searchTodo = todos.find((todo) => String(todo.id) === id);
@@ -27,4 +26,4 @@ export const ItemDescription = ({todos}: ComponentProps) => {
 			<h1>{todo?.text}</h1>
 		</div>
 	);
-}
+};
