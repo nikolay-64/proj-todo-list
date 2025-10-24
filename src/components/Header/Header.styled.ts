@@ -13,6 +13,7 @@ export const ClasessHeader = styled.header`
 `;
 
 export const ClasessContainer = styled.div`
+	position: relative;
 	max-width: 97%;
 	width: 100%;
 	margin: 0 auto;
@@ -30,3 +31,12 @@ export const ClasessNavLink = styled(NavLink)`
 		color: #ffffff33;
 	}
 `;
+
+export const ClasessToggleButton = styled.div `
+
+	position: absolute;
+	right: 0;
+	top: 50%;
+	transform: translateY(-50%);
+
+`
