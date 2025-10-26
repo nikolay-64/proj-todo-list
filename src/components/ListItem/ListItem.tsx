@@ -4,12 +4,8 @@ import { StyledListItemLink } from "./ListItem.styled";
 export const ListItem = ({todo}: {todo: ToDo}) => {
 	  const href = `/list/${todo.id}`;
 	return (
-
-		 <StyledListItemLink isDone={todo.isDone} to={href}>{todo.text}</StyledListItemLink>
-		// <NavLink isDone={todo.isDone}
-		// 	target="_blank"
-		// 	rel="noreferrer"
-		// 	href={`/list/${todo.id}`}
-		// >{todo.text}</NavLink>
+		<StyledListItemLink done={todo.isDone ? "true" : "false"} to={href}>
+			"{todo.text}"
+		</StyledListItemLink>
 	);
 }

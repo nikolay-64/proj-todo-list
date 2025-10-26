@@ -10,6 +10,11 @@ ${normalize}
     box-sizing: border-box;
 }
 
+div > h1 {
+	margin: 0;
+	margin-button: 15px;
+}
+
 body {
     background-color: ${({theme}) => theme.colors.backgroundSecondary};
     padding: 50px 0 0 0;
